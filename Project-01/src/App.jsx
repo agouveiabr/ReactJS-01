@@ -4,6 +4,7 @@ import './global.css'
 
 import styles from './App.module.css'
 import { Sidebar } from './components/Sidebar'
+import { Post } from './components/Post'
 
 function App() {
 
@@ -12,7 +13,10 @@ function App() {
       <Header />
       <div className={styles.wrapper}>
         <Sidebar />
-        <main>Main</main>
+        <main>
+          <Post />
+          <Post />
+        </main>
       </div>
     </>
   )
