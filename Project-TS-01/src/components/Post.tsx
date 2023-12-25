@@ -1,14 +1,26 @@
 import {format, formatDistanceToNow} from 'date-fns'
-import ptBR from 'date-fns/locale/pt-BR'
+import {ptBR} from 'date-fns/locale/pt-BR'
 
 import { Avatar } from './Avatar'
 import { Comment } from './Comment'
 import styles from './Post.module.css'
-import { useState } from 'react'
+import { ChangeEvent, InvalidEvent, useState } from 'react'
+
+interface PostProps {
+  author: {
+    name: string;
+    avatarUrl: string;
+    role: string;
+  },
+  publishedAt: Date;
+  content: {
+    type: 'paragraph' | 'link';
+    content: string;
+  }[];
+};
 
 
-
-export function Post({author, content, publishedAt}){
+export function Post({author, content, publishedAt} : PostProps){
 
   const [comments, setComments] = useState([
     'Post muito bacana, amigao'
@@ -22,7 +34,7 @@ export function Post({author, content, publishedAt}){
     addSuffix: true
   })
 
-  function handleCreateComment (e) {
+  function handleCreateComment (e: ChangeEvent<HTMLFormElement>) {
     e.preventDefault()
     e.target.comment.setCustomValidity('')
 
@@ -31,9 +43,13 @@ export function Post({author, content, publishedAt}){
     setNewCommentText('')
   }
 
-  function handleDeleteComment(comment){
+  function handleDeleteComment(comment: string){
     console.log(`Comentario '${comment}' deletado`)
     setComments(comments.filter(c => c !== comment))
+  }
+
+  function handleCommentInvalid(e: InvalidEvent<HTMLTextAreaElement>){
+    e.target.setCustomValidity('Nao pode ser vazio')
   }
 
   const isNewCommentEmpty = newCommentText.length === 0;
@@ -74,7 +90,7 @@ export function Post({author, content, publishedAt}){
           placeholder='O que você achou do post?'
           value={newCommentText}
           onChange={e => setNewCommentText(e.target.value)}
-          onInvalid={e => e.target.setCustomValidity('O comentário não pode estar vazio')}
+          onInvalid={handleCommentInvalid}
           required
         />
 
@@ -93,7 +109,6 @@ export function Post({author, content, publishedAt}){
           />
         ))}
       </div>
-
 
     </article>
   )
