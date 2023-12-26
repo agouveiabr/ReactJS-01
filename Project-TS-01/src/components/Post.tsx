@@ -6,21 +6,32 @@ import { Comment } from './Comment'
 import styles from './Post.module.css'
 import { ChangeEvent, InvalidEvent, useState } from 'react'
 
-interface PostProps {
-  author: {
-    name: string;
-    avatarUrl: string;
-    role: string;
-  },
+
+
+interface Author{
+  name: string;
+  avatarUrl: string;
+  role: string;
+}
+
+export interface PostType{
+  id: number;
+  author: Author;
+  content: Content[];
   publishedAt: Date;
-  content: {
-    type: 'paragraph' | 'link';
-    content: string;
-  }[];
-};
+}
+
+interface Content{
+  type: 'paragraph' | 'link';
+  content: string;
+}
+
+interface PostProps{
+  post: PostType;
+}
 
 
-export function Post({author, content, publishedAt} : PostProps){
+export function Post({post} : PostProps){
 
   const [comments, setComments] = useState([
     'Post muito bacana, amigao'
@@ -28,8 +39,8 @@ export function Post({author, content, publishedAt} : PostProps){
 
   const [newCommentText, setNewCommentText] = useState('')
 
-  const publishedDateFormated = format(publishedAt, "dd 'de' MMM 'de' yyyy", {locale: ptBR})
-  const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+  const publishedDateFormated = format(post.publishedAt, "dd 'de' MMM 'de' yyyy", {locale: ptBR})
+  const publishedDateRelativeToNow = formatDistanceToNow(post.publishedAt, {
     locale: ptBR,
     addSuffix: true
   })
@@ -60,10 +71,10 @@ export function Post({author, content, publishedAt} : PostProps){
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar src={author.avatarUrl} />
+          <Avatar src={post.author.avatarUrl} />
           <div className={styles.authorInfo}>
-            <strong>{author.name}</strong>
-            <span>{author.role}</span>
+            <strong>{post.author.name}</strong>
+            <span>{post.author.role}</span>
           </div>
         </div>
         
@@ -72,7 +83,7 @@ export function Post({author, content, publishedAt} : PostProps){
 
       <div className={styles.content}>
 
-        {content.map((line, index) => {
+        {post.content.map((line, index) => {
           if(line.type === 'paragraph'){
             return <p key={index}>{line.content}</p>
           } else if(line.type === 'link'){
