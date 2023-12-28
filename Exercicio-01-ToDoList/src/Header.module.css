@@ -1,0 +1,16 @@
+.header{
+  background-color: var(--gray-700);
+  height: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.to{
+  color: var(--blue);
+  margin-left: 0.5rem;
+}
+
+.do{
+  color: var(--purple);
+}
