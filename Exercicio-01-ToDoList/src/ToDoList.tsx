@@ -13,14 +13,24 @@ interface tasks{
 }
 
 export function ToDoList() {
-
-  const [checkboxValue, setCheckboxValue] = useState('')
   
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<tasks[]>([]);
 
   function handleDeleteTask( id: number ){
     const filteredTasks = tasks.filter((task: tasks) => task.id !== id)
     setTasks(filteredTasks)
+  }
+
+  function handleCheckbox(id: number) {
+    const updatedTasks = tasks.map((task: tasks) => {
+      if (task.id === id) {
+        return {...task, completed: !task.completed};
+      } else {
+        return task;
+      }
+    });
+  
+    setTasks(updatedTasks);
   }
 
   
@@ -56,9 +66,11 @@ export function ToDoList() {
                       type="checkbox"
                       name="task"
                       id="task"
+                      checked={task.completed}
+                      onChange={() => handleCheckbox(task.id)}
                     />
                   </div>
-                  <span className={styles.task_content}>{task.content}</span>
+                  <span className={task.completed ? styles.content_completed : styles.content}>{task.content}</span>
                   <span>
                     <Trash 
                       size={24} 

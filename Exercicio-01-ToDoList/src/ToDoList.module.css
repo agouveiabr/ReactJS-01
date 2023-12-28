@@ -1,8 +1,10 @@
 .container{
+    position: absolute;
+    top: 160px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 0 1rem;
+    max-width: 720px
 }
 
 .header{
@@ -57,9 +59,14 @@
     color: var(--gray-100);
 }
   
-.task_content {
+.content, .content_completed {
     flex-grow: 1; 
-    margin: 0 1rem; 
+    margin: 0 1rem;
+}
+
+.content_completed {
+    text-decoration: line-through;
+    color: var(--gray-300); 
 }
   
 
